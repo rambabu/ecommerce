@@ -1,3 +1,5 @@
 .idea/
 build/classes/
 .gradle/
+build/resources
+build/tmp
