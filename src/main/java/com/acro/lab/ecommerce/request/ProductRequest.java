@@ -1,14 +1,9 @@
 package com.acro.lab.ecommerce.request;
 
-import com.acro.lab.ecommerce.entity.Category;
-import com.acro.lab.ecommerce.entity.ProductInventory;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 @Data
 public class ProductRequest {
@@ -21,6 +16,6 @@ public class ProductRequest {
     private double price;
     @NotNull
     private Long categoryId;
-
-
+    @Range(min=0, max = 1000)
+    private Integer quantity;
 }
