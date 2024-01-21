@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,14 +21,13 @@ public class ProductController {
     public ProductController(@Autowired ProductService productService){
         this.productService=productService;
     }
-    @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE }, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping("/")
     public ResponseEntity<ProductResponse> createProduct(@RequestBody @Valid ProductRequest productRequest)
        {
            try {
                if (productRequest != null){
                    ProductResponse productResponse=productService.createProduct(productRequest);
                    return ResponseEntity.ok(productResponse);
-
                }
            }
            catch(Exception e){

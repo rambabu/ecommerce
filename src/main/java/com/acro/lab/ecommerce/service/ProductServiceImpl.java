@@ -40,10 +40,8 @@ public class ProductServiceImpl implements ProductService {
                 product.setCategory(categoryOne);
                 product.setQuantity(productRequest.getQuantity());
                 Product productOne = productRepository.save(product);
-                log.info("Saved Successfully");
-                ProductResponse productResponse = new ProductResponse();
-                BeanUtils.copyProperties(productOne, productResponse);
-                return productResponse;
+                return CommonResponseMapper.convertToProductResponse(productOne);
+
             } else {
                 log.error("Category not found");
                 throw new EcommerceException("product not created");
@@ -85,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
             if(product.isPresent()){
                 Product productOne = product.get();
                 productRepository.deleteById(id);
-                log.info("Product deleted successfully {}", product);
+                log.info("Product deleted successfully {}", productOne);
                 return true;
             }
         }

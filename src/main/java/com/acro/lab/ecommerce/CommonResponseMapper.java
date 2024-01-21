@@ -16,7 +16,8 @@ public class CommonResponseMapper {
     public static ProductResponse convertToProductResponse(Product product){
         ProductResponse productResponse = new ProductResponse();
         BeanUtils.copyProperties(product, productResponse);
-        productResponse.setCategoryId(product.getId());
+        productResponse.setCategoryId(product.getCategory().getId());
+        productResponse.setCategoryName(product.getCategory().getName());
         return productResponse;
     }
 
