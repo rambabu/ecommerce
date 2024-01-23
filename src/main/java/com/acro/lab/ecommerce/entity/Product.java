@@ -9,19 +9,16 @@ import java.util.Objects;
 @Data
 @Table
 public class Product extends BaseEntity{
-   @Column(name="name")
-   private String name;
-   @Column(name="description")
-   private String description;
-   @Column(name="price")
-   private double price;
 
-   @ManyToOne
+   private String name;
+
+   private String description;
+
+   private double price;
+   @ManyToOne(fetch=FetchType.EAGER)
    @JoinColumn(name="category_id")
    private Category category;
-
-   @OneToOne(mappedBy ="product")
-   private ProductInventory productInventory;
+   private Integer quantity;
 
     @Override
     public boolean equals(Object o) {
