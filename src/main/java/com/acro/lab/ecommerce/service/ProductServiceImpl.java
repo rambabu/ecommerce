@@ -113,9 +113,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponse> getProductsByName(String name) {
-        List<Product> products =productRepository.findProductByName(name);
+        List<Product> products =productRepository.findProductByName(name.toLowerCase());
         return products.stream().map(CommonResponseMapper::convertToProductResponse).collect(Collectors.toList());
-
-
     }
 }
