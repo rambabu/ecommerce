@@ -1,6 +1,7 @@
 package com.acro.lab.ecommerce.service;
 
 import com.acro.lab.ecommerce.CommonResponseMapper;
+import com.acro.lab.ecommerce.dto.ProductProjection;
 import com.acro.lab.ecommerce.entity.Category;
 import com.acro.lab.ecommerce.entity.Product;
 import com.acro.lab.ecommerce.exceptions.EcommerceException;
@@ -11,7 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -41,7 +44,6 @@ public class ProductServiceImpl implements ProductService {
                 product.setQuantity(productRequest.getQuantity());
                 Product productOne = productRepository.save(product);
                 return CommonResponseMapper.convertToProductResponse(productOne);
-
             } else {
                 log.error("Category not found");
                 throw new EcommerceException("product not created");
@@ -92,6 +94,28 @@ public class ProductServiceImpl implements ProductService {
         }
         throw new EcommerceException("Unable to Delete");
     }
+    @Override
+    public List<ProductResponse> getAllProductsByCategoryId(Long categoryId) {
+        List<ProductProjection> products =productRepository.findProductByCategoryId(categoryId);
+
+        return products.stream().map(p -> {
+            ProductResponse response = new ProductResponse();
+            response.setCategoryId(p.getId());
+            response.setCategoryName(p.getCategoryName());
+            response.setName(p.getName());
+            response.setPrice(p.getPrice());
+            response.setDescription(p.getDescription());
+            response.setId(p.getId());
+            response.setQuantity(p.getQuantity());
+            return response;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductResponse> getProductsByName(String name) {
+        List<Product> products =productRepository.findProductByName(name);
+        return products.stream().map(CommonResponseMapper::convertToProductResponse).collect(Collectors.toList());
 
 
+    }
 }

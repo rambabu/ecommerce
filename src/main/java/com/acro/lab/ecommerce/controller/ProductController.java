@@ -11,12 +11,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/product")
 @Slf4j
 public class ProductController {
 
     private final ProductService productService;
+
 
     public ProductController(@Autowired ProductService productService){
         this.productService=productService;
@@ -31,7 +35,7 @@ public class ProductController {
                }
            }
            catch(Exception e){
-               log.error("create failed");
+               log.error("create failed", e);
                throw new EcommerceException("creation failed",e);
            }
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -57,7 +61,18 @@ public class ProductController {
         log.info("Deleted Successfully");
         return ResponseEntity.ok(result);
     }
-
-}
-
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<ProductResponse>> getAllProductsByCategoryId(@PathVariable Long categoryId) {
+        List<ProductResponse> allProducts = productService.getAllProductsByCategoryId(categoryId);
+        if (allProducts != null) return ResponseEntity.ok(allProducts);
+        return ResponseEntity.ok(Collections.emptyList());
+    }
+    @GetMapping("/name/{name}")
+    private ResponseEntity<List<ProductResponse>> getProductsByName(@PathVariable String name){
+       List<ProductResponse> response = productService.getProductsByName(name);
+       if(response!=null)
+        return ResponseEntity.ok(response);
+       return ResponseEntity.ok(Collections.emptyList());
+    }
+    }
 
