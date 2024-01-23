@@ -15,6 +15,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             " where p.name like %:name%", nativeQuery = true)
     List<Product> findProductByName(@Param("name") String name);
 
+
     @Query(value ="select p.id, p.name, p.description, p.price, p.quantity, c.name categoryName " +
             "from product p " +
             "join category c on p.category_id = c.id " +
